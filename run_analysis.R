@@ -28,9 +28,14 @@ names(merged_dataset)
 activities <- read.table("activity_labels.txt")
 y_dataset[,1] <- activities[y_dataset[,1],2]
 ##Step 4
-names(y_dataset) <- "Activity Name"
+names(y_dataset) <- "Activity_Name"
 names(subj_dataset) <- "Subject"
 ## cmbining updated Datasets
 merged_dataset <- cbind(x_dataset,y_dataset,subj_dataset)
 
+##Step 5
+average_of_each_activity <- ddply(merged_dataset, .(Subject,Activity_Name),function(x) colMeans(x[1:66]))
+
+##writing tidy data to a text file
+write.table(average_of_each_activity,"tidy_dataset.txt",row.name=FALSE)
 
