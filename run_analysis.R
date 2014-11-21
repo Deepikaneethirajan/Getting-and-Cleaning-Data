@@ -13,9 +13,24 @@ subj_train <- read.table("subject_train.txt")
 x_dataset <- rbind(x_test,x_train)
 y_dataset <- rbind(y_test,y_train)
 subj_dataset <- rbind(subj_test,subj_train)
-merged_dataset <- cbind(x_dataset,y_dataset,subj_dataset)
+
 
 ##Step 2
 features_data <- read.table("features.txt")
 mean_std_col_names <- grep(".*mean.*|.*std.*",features_data[,2])
+##subset cols with mean and std
+merged_dataset <- merged_dataset[,mean_std_col_names]
+##Renaming columns
+names(merged_dataset) <- features_data [mean_std_col_names,2]
+names(merged_dataset)
+
+##Step 3
+activities <- read.table("activity_labels.txt")
+y_dataset[,1] <- activities[y_dataset[,1],2]
+##Step 4
+names(y_dataset) <- "Activity Name"
+names(subj_dataset) <- "Subject"
+## cmbining updated Datasets
+merged_dataset <- cbind(x_dataset,y_dataset,subj_dataset)
+
 
